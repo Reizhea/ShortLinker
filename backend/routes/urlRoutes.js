@@ -14,7 +14,9 @@ router.post('/shorten', async (req, res) => {
       const shortCode = nanoid(8);
       const newUrl = new URL({ originalUrl, shortCode });
       await newUrl.save();
-      res.json({ originalUrl, shortCode });
+      const baseUrl = req.protocol + '://' + req.get('host');
+      const shortUrl = `${baseUrl}/${shortCode}`;
+      res.json({ shortUrl });
     } catch (err) {
       res.status(500).json({ error: 'Server error' });
     }

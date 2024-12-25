@@ -11,8 +11,7 @@ router.post('/shorten', async (req, res) => {
     if (!originalUrl) {
       return res.status(400).json({ error: 'Original URL is required' });
     }
-  
-    // URL validation
+
     if (!validator.isURL(originalUrl, { require_protocol: true })) {
         return res.status(400).json({ error: 'Invalid URL format' });
       }
@@ -21,8 +20,7 @@ router.post('/shorten', async (req, res) => {
   
     try {
       let shortCode;
-  
-      // Custom code logic with length restriction
+
       if (customCode) {
         if (customCode.length > 10) {
           return res.status(400).json({ error: 'Custom code exceeds maximum length of 10 characters.' });
@@ -34,17 +32,15 @@ router.post('/shorten', async (req, res) => {
         }
         shortCode = customCode;
       } else {
-        shortCode = nanoid(8); // Generate random short code
+        shortCode = nanoid(8);
       }
   
-      // Check for existing URL
       let existingUrl = await URL.findOne({ originalUrl }).select('shortCode');
       if (existingUrl && !customCode) {
         const shortUrl = `${baseUrl}/${existingUrl.shortCode}`;
         return res.json({ shortUrl });
       }
   
-      // Save new URL
       const newUrl = new URL({ originalUrl, shortCode });
       await newUrl.save();
   

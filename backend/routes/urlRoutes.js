@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import { nanoid } from 'nanoid';
 import URL from '../models/URL.js';
+import validator from 'validator';
 
 
 router.post('/shorten', async (req, res) => {
@@ -11,32 +12,39 @@ router.post('/shorten', async (req, res) => {
       return res.status(400).json({ error: 'Original URL is required' });
     }
   
+    // URL validation
+    if (!validator.isURL(originalUrl, { require_protocol: true })) {
+        return res.status(400).json({ error: 'Invalid URL format' });
+      }
+  
     const baseUrl = req.protocol + '://' + req.get('host');
   
     try {
       let shortCode;
   
+      // Custom code logic with length restriction
       if (customCode) {
+        if (customCode.length > 10) {
+          return res.status(400).json({ error: 'Custom code exceeds maximum length of 10 characters.' });
+        }
+  
         const existingCode = await URL.findOne({ shortCode: customCode });
         if (existingCode) {
           return res.status(400).json({ error: 'Custom code is already in use.' });
         }
         shortCode = customCode;
-  
-        const newUrl = new URL({ originalUrl, shortCode });
-        await newUrl.save();
-        const shortUrl = `${baseUrl}/${shortCode}`;
-        return res.json({ shortUrl });
+      } else {
+        shortCode = nanoid(8); // Generate random short code
       }
   
+      // Check for existing URL
       let existingUrl = await URL.findOne({ originalUrl }).select('shortCode');
-      if (existingUrl) {
+      if (existingUrl && !customCode) {
         const shortUrl = `${baseUrl}/${existingUrl.shortCode}`;
         return res.json({ shortUrl });
       }
   
-      shortCode = nanoid(8);
-  
+      // Save new URL
       const newUrl = new URL({ originalUrl, shortCode });
       await newUrl.save();
   

@@ -27,11 +27,11 @@ app.get('/:shortCode', async (req, res) => {
     try {
       const url = await URL.findOne({ shortCode });
       if (url) {
-        url.clicks += 1; // Increment click count
         await url.save();
-        return res.redirect(url.originalUrl); // Redirect to original URL
+        return res.redirect(url.originalUrl); 
       } else {
-        return res.status(404).json({ error: 'Short URL not found' });
+        const frontendBaseUrl = process.env.FRONTEND_BASE_URL;
+      return res.redirect(`${frontendBaseUrl}/404`);
       }
     } catch (err) {
       res.status(500).json({ error: 'Server error' });

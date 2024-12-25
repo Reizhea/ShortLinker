@@ -9,7 +9,7 @@ router.post('/shorten', async (req, res) => {
     const { originalUrl, customCode } = req.body;
   
     if (!originalUrl) {
-      return res.status(400).json({ error: 'Original URL is required' });
+      return res.status(400).json({ error: 'Please enter a URL' });
     }
 
     if (!validator.isURL(originalUrl, { require_protocol: true })) {
@@ -50,22 +50,5 @@ router.post('/shorten', async (req, res) => {
       res.status(500).json({ error: 'Server error' });
     }
   });
-  
-
-router.get('/:shortCode', async (req, res) => {
-  const { shortCode } = req.params;
-
-  try {
-    const url = await URL.findOne({ shortCode });
-    if (url) {
-      await url.save();
-      return res.redirect(url.originalUrl);
-    } else {
-      return res.status(404).json({ error: 'Short URL not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
 
 export default router;

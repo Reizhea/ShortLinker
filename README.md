@@ -36,19 +36,19 @@ ShortLinker is an intuitive and efficient platform for shortening URLs, offering
 
 ### User Interface
 #### Light Mode
-![Light Mode Preview](assets/images/light-mode.jpg)
+![Light Mode Preview](images/light-mode.jpg)
 
 #### Dark Mode
-![Dark Mode Preview](assets/images/dark-mode.jpg)
+![Dark Mode Preview](images/dark-mode.jpg)
 
 #### URL Shortening
-![URL Shortening Workflow](assets/images/url-shortened.jpg)
+![URL Shortening Workflow](images/url-shortened.jpg)
 
 #### QR Code Modal
-![QR Code Modal](assets/images/qr-code.jpg)
+![QR Code Modal](images/qr-code.jpg)
 
 #### 404 Page
-![404 Page](assets/images/404-page.jpg)
+![404 Page](images/404-page)
 
 ---
 

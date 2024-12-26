@@ -1,6 +1,10 @@
-@import './styles/tailwind.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import "./styles/tailwind.css";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+}
+.dark {
+  background-color: #1a202c; /* Dark gray background */
+  color: #f7fafc; /* Light text */
 }
